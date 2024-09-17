@@ -1,0 +1,24 @@
+on: 
+  push:
+   branches: [main]   
+jobs:
+  export_game:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    name: Build Release
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3.3.0
+    - name: zip addons, readme and json example
+      run: |
+        7z a -tzip "proc-machine-importer-(${{ github.ref_name }}).zip" "README.md"
+        7z a -tzip "proc-machine-importer-(${{ github.ref_name }}).zip" "machine.json"
+        7z a -tzip "proc-machine-importer-(${{ github.ref_name }}).zip" "addons"
+
+    - name: create release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}        
+        generateReleaseNotes: true
+        tag: ${{ github.ref_name }}
+        artifacts: proc-machine-importer-(${{ github.ref_name }}).zip
