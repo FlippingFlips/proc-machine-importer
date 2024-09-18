@@ -19,6 +19,9 @@ jobs:
       uses: ncipollo/release-action@v1.12.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}        
-        generateReleaseNotes: true
+        generateReleaseNotes: false
+        allowUpdates: true
         tag: ${{ github.ref_name }}
+        replacesArtifacts: true
+        removeArtifacts: true
         artifacts: proc-machine-importer-(${{ github.ref_name }}).zip
